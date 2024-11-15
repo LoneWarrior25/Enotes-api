@@ -2,6 +2,7 @@ package com.Enotes.serviceImpl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.Enotes.dto.CateogoryResponse;
 import com.Enotes.entities.Cateogory;
 import com.Enotes.repositories.CateogoryRepository;
 import com.Enotes.service.CateogoryService;
+
 
 @Service
 public class CateogoryServiceImpl implements CateogoryService{
@@ -51,7 +53,7 @@ public class CateogoryServiceImpl implements CateogoryService{
 	@Override
 	public List<CateogoryDto> getAllCateogories() {
 		
-		List<Cateogory> cateogories = this.cateogoryRepo.findAll();
+		List<Cateogory> cateogories = this.cateogoryRepo.findByIsDeletedFalse();
            
 		List<CateogoryDto> cateogoryDto = cateogories.stream().map(cat-> this.modelMapper.map(cat, CateogoryDto.class)).toList();
 		
@@ -61,11 +63,45 @@ public class CateogoryServiceImpl implements CateogoryService{
 	@Override
 	public List<CateogoryResponse> getActiveCateogories() {
 		
-		List<Cateogory> cateogoryList = this.cateogoryRepo.findByIsActiveTrue();
+		List<Cateogory> cateogoryList = this.cateogoryRepo.findByIsActiveTrueAndIsDeletedFalse();
 		
 		List<CateogoryResponse> activeCateogories =  cateogoryList.stream().map(cat-> this.modelMapper.map(cat, CateogoryResponse.class)).toList();
 		
 		return activeCateogories;
 	}
+
+	@Override
+	public Boolean deleteCateogory(Integer id) {
+		
+		Optional<Cateogory> findById = this.cateogoryRepo.findById(id);
+		
+		if(findById.isPresent()) {
+			
+			Cateogory cateogory = findById.get();
+			cateogory.setIsDeleted(true);
+			cateogoryRepo.save(cateogory);
+			return true;
+			
+		}
+		
+		return false;
+	}
+
+	@Override
+	public CateogoryDto getSingleCateogory(Integer id) {
+		
+		Optional<Cateogory> findById = this.cateogoryRepo.findByIdAndIsDeletedFalse(id);
+		
+             if(findById.isPresent()) {
+			
+			Cateogory cateogory = findById.get();
+			
+			return this.modelMapper.map(cateogory, CateogoryDto.class);
+		}
+             
+             return null;
+	}
+	
+	
 
 }

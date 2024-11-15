@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,6 +65,35 @@ public class CateogoryController {
 		
 		else {
 			return new ResponseEntity<>(cateogories,HttpStatus.OK);
+		}
+	}
+	
+	@GetMapping("/getSingleCateogory/id")
+	public ResponseEntity<?> getSingleCateogory(@PathVariable Integer id){
+		
+		CateogoryDto singleCateogory = this.cateogoryService.getSingleCateogory(id);
+		
+		if(ObjectUtils.isEmpty(singleCateogory)) {
+			
+			return new ResponseEntity<>("Cannot found id :" + id,HttpStatus.NOT_FOUND);
+		}
+		else {
+			return new ResponseEntity<>("Requested Id is  :" + id,HttpStatus.OK);
+		}
+	}
+	
+	@DeleteMapping("/delete/id")
+	public ResponseEntity<?> deleteCateogory(@PathVariable Integer id){
+		
+		Boolean deleteCateogory = this.cateogoryService.deleteCateogory(id);
+		
+
+		if(deleteCateogory) {
+			
+			return new ResponseEntity<>("Cannot found id :" + id,HttpStatus.NOT_FOUND);
+		}
+		else {
+			return new ResponseEntity<>("Deleted Id is  :" + id,HttpStatus.OK);
 		}
 	}
 }
