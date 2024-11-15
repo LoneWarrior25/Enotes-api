@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.Enotes.dto.CateogoryDto;
+import com.Enotes.dto.CateogoryResponse;
 import com.Enotes.entities.Cateogory;
 import com.Enotes.service.CateogoryService;
 
@@ -23,9 +25,9 @@ public class CateogoryController {
 	private CateogoryService cateogoryService;
 
 	@PostMapping("/save")
-	public ResponseEntity<?> saveCateogory(@RequestBody Cateogory cateogory){
+	public ResponseEntity<?> saveCateogory(@RequestBody CateogoryDto cateogoryDto){
 		
-		Boolean savedCateogory = this.cateogoryService.saveCateogory(cateogory);
+		Boolean savedCateogory = this.cateogoryService.saveCateogory(cateogoryDto);
 		
 		if(savedCateogory) {
 			return new ResponseEntity<>("Cateogory saved successfully",HttpStatus.CREATED);
@@ -41,7 +43,20 @@ public class CateogoryController {
 	@GetMapping("/getAll")
 	public ResponseEntity<?> getAllCateogories(){
 		
-		List<Cateogory> cateogories = this.cateogoryService.getAllCateogories();
+		List<CateogoryDto> cateogories = this.cateogoryService.getAllCateogories();
+		if(ObjectUtils.isEmpty(cateogories)) {
+			return ResponseEntity.noContent().build();
+		}
+		
+		else {
+			return new ResponseEntity<>(cateogories,HttpStatus.OK);
+		}
+	}
+	
+	@GetMapping("/get-active-cateogories")
+	public ResponseEntity<?> getAactiveCateogories(){
+		
+		List<CateogoryResponse> cateogories = this.cateogoryService.getActiveCateogories();
 		if(ObjectUtils.isEmpty(cateogories)) {
 			return ResponseEntity.noContent().build();
 		}

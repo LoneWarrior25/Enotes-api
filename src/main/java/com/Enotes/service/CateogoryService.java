@@ -2,11 +2,15 @@ package com.Enotes.service;
 
 import java.util.List;
 
-import com.Enotes.entities.Cateogory;
+import com.Enotes.dto.CateogoryDto;
+import com.Enotes.dto.CateogoryResponse;
+
 
 public interface CateogoryService {
 
-	public Boolean saveCateogory(Cateogory cateogory);
+	public Boolean saveCateogory(CateogoryDto cateogoryDto);
 	
-	public List<Cateogory> getAllCateogories();
+	public List<CateogoryDto> getAllCateogories();
+	
+	public List<CateogoryResponse> getActiveCateogories();
 }
