@@ -13,4 +13,8 @@ public interface CateogoryService {
 	public List<CateogoryDto> getAllCateogories();
 	
 	public List<CateogoryResponse> getActiveCateogories();
+	
+	public Boolean deleteCateogory(Integer id);
+	
+	public CateogoryDto getSingleCateogory(Integer id);
 }
