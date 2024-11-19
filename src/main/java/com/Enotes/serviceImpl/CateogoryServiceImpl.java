@@ -37,17 +37,42 @@ public class CateogoryServiceImpl implements CateogoryService{
 
 		Cateogory cateogory = this.modelMapper.map(cateogoryDto, Cateogory.class);
 		
-		cateogory.setIsDeleted(false);
-		cateogory.setCreatedBy(1);
-		cateogory.setCreatedOn(new Date());
-	
-		Cateogory savedCateogory = cateogoryRepo.save(cateogory);
+		if(ObjectUtils.isEmpty(cateogory)) {
+			
+			cateogory.setIsDeleted(false);
+			cateogory.setCreatedBy(1);
+			cateogory.setCreatedOn(new Date());
+			
+		}
+		else {
+			updateCateogory(cateogory);
+		}
 		
+		
+		Cateogory savedCateogory = cateogoryRepo.save(cateogory);
 		
 		if(ObjectUtils.isEmpty(savedCateogory)) {
 			return false;
 		}
 		return true;
+	}
+
+	private void updateCateogory(Cateogory cateogory) {
+		
+		Optional<Cateogory> findById = cateogoryRepo.findById(cateogory.getId());
+		
+		if(findById.isPresent()) {
+			
+			Cateogory existedCateogory = findById.get();
+			
+			cateogory.setCreatedBy(existedCateogory.getCreatedBy());
+			cateogory.setCreatedOn(existedCateogory.getCreatedOn());
+			cateogory.setIsDeleted(existedCateogory.getIsDeleted());
+			
+			cateogory.setUpdatedBy(1);
+			cateogory.setUpdatedOn(new Date());
+		}
+		
 	}
 
 	@Override
