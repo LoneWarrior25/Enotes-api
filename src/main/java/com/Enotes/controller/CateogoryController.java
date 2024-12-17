@@ -92,15 +92,7 @@ public class CateogoryController {
 			return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-//		CateogoryDto singleCateogory = this.cateogoryService.getSingleCateogory(id);
-////		
-//		if(ObjectUtils.isEmpty(singleCateogory)) {
-//			
-//			return new ResponseEntity<>("Cannot found id :" + id,HttpStatus.NOT_FOUND);
-//		}
-//		else {
-//			return new ResponseEntity<>("Requested Id is  :" + id,HttpStatus.OK);
-//		}
+
 		
 	}
 
