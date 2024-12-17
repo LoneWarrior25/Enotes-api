@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import com.Enotes.Exceptions.ResourceNotFoundException;
 import com.Enotes.dto.CateogoryDto;
 import com.Enotes.dto.CateogoryResponse;
 import com.Enotes.entities.Cateogory;
@@ -113,20 +114,19 @@ public class CateogoryServiceImpl implements CateogoryService{
 	}
 
 	@Override
-	public CateogoryDto getSingleCateogory(Integer id) {
-		
-		Optional<Cateogory> findById = this.cateogoryRepo.findByIdAndIsDeletedFalse(id);
-		
-             if(findById.isPresent()) {
-			
-			Cateogory cateogory = findById.get();
-			
-			return this.modelMapper.map(cateogory, CateogoryDto.class);
+	public CateogoryDto getSingleCateogory(Integer id) throws Exception {
+
+		Cateogory category = cateogoryRepo.findByIdAndIsDeletedFalse(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Category not found with id=" + id));
+
+		if (!ObjectUtils.isEmpty(category)) {
+			category.getName().toUpperCase();
+			return modelMapper.map(category, CateogoryDto.class);
 		}
-             
-             return null;
+		return null;
+	}
 	}
 	
 	
 
-}
+
