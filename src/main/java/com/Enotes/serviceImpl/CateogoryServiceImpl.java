@@ -15,6 +15,7 @@ import com.Enotes.dto.CateogoryResponse;
 import com.Enotes.entities.Cateogory;
 import com.Enotes.repositories.CateogoryRepository;
 import com.Enotes.service.CateogoryService;
+import com.Enotes.util.Validation;
 
 
 @Service
@@ -26,6 +27,11 @@ public class CateogoryServiceImpl implements CateogoryService{
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@Autowired
+	private Validation validation;
+	
+	
+	
 	
 	@Override
 	public Boolean saveCateogory(CateogoryDto cateogoryDto) {
@@ -35,6 +41,8 @@ public class CateogoryServiceImpl implements CateogoryService{
 //		cateogory.setName(cateogoryDto.getName());
 //		cateogory.setDescription(cateogoryDto.getDescription());
 //		cateogory.setIsActive(cateogoryDto.getIsActive());
+		
+		validation.cateogoryValidation(cateogoryDto);
 
 		Cateogory cateogory = this.modelMapper.map(cateogoryDto, Cateogory.class);
 		
