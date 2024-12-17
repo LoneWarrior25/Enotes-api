@@ -16,5 +16,5 @@ public interface CateogoryService {
 	
 	public Boolean deleteCateogory(Integer id);
 	
-	public CateogoryDto getSingleCateogory(Integer id);
+	public CateogoryDto getSingleCateogory(Integer id) throws Exception;
 }
