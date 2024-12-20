@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import com.Enotes.Exceptions.ExistsDataException;
 import com.Enotes.Exceptions.ResourceNotFoundException;
 import com.Enotes.dto.CateogoryDto;
 import com.Enotes.dto.CateogoryResponse;
@@ -43,6 +44,13 @@ public class CateogoryServiceImpl implements CateogoryService{
 //		cateogory.setIsActive(cateogoryDto.getIsActive());
 		
 		validation.cateogoryValidation(cateogoryDto);
+		
+		Boolean exists = cateogoryRepo.existsByName(cateogoryDto.getName().trim());
+		
+		if(exists) {
+			
+			throw new ExistsDataException("Cateogory already exists");
+		}
 
 		Cateogory cateogory = this.modelMapper.map(cateogoryDto, Cateogory.class);
 		
