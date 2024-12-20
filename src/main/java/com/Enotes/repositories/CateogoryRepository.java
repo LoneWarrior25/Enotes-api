@@ -16,4 +16,5 @@ public interface CateogoryRepository extends JpaRepository<Cateogory, Integer>{
 
 	List<Cateogory> findByIsDeletedFalse();
 
+	Boolean existsByName(String name);
 }
